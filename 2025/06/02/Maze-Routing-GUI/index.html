@@ -159,32 +159,71 @@
   }
 </style>
 
-<h1 id="簡介（繁體中文版）"><a href="#簡介（繁體中文版）" class="headerlink" title="簡介（繁體中文版）"></a>簡介（繁體中文版）</h1><p>Maze Routing GUI 是一個使用 C++ 和 SFML 圖形庫開發的解迷宮問題可視化應用程式。</p>
+<h1 id="MazeRoutingILP-GUI（中文簡介）"><a href="#MazeRoutingILP-GUI（中文簡介）" class="headerlink" title="MazeRoutingILP-GUI（中文簡介）"></a>MazeRoutingILP-GUI（中文簡介）</h1><p>這是一個使用 SFML 圖形庫開發的解迷宮問題視覺化應用程式。包含 BFS、Astar、ILP 三種不同的演算法。</p>
 <h3 id="✨-功能特點"><a href="#✨-功能特點" class="headerlink" title="✨ 功能特點"></a>✨ 功能特點</h3><ul>
-<li>迷宮問題的可視化顯示</li>
+<li><p>特別的 ILP 演算法</p>
+</li>
+<li><p>迷宮問題的可視化顯示</p>
+</li>
 </ul>
 <p><br><img src="/img/maze_1.jpg" width="30%"></p>
 <ul>
-<li>互動式路徑懸停效果，顯示路徑訊息</li>
+<li>互動式路徑懸停效果，顯示路徑信息</li>
 </ul>
 <p><br><img src="/img/maze_2.jpg" width="30%"></p>
 <ul>
 <li>支持下載迷宮截圖</li>
 <li>支持下載路徑結果</li>
 </ul>
+<h3 id="📊-ILP-演算法"><a href="#📊-ILP-演算法" class="headerlink" title="📊 ILP 演算法"></a>📊 ILP 演算法</h3><p>假設一開始有 N 個 Nets 要 routing，我們會初始化一個 set <code>remaining_nets</code>，使用者可以用 <code>--max-iter</code> 參數設定疊代的次數，在每次疊代中：</p>
+<pre><code>1. remaining_nets 中的各個 Nets 用 BFS 嘗試找尋 routes，各 Nets 找到的 routes 可能會衝突（共用某個 cell）。
+2. 在上一步驟找到的 routes 中，用 ILP 演算法找到 &quot;最多有幾條 routes 可以共存不會衝突&quot;
+3. 將這些沒有衝突的 routes 從 remaining_nets 中刪除，表示我們已經確定它們的路徑了，之後找其他 routes 時不可以和它們衝突。
+4. 若 remaining_nets 中還有元素，且 尚未遞迴到第 --max-iter 輪，則回到步驟 1. 繼續執行。
+</code></pre>
+<h3 id="💻-系統需求"><a href="#💻-系統需求" class="headerlink" title="💻 系統需求"></a>💻 系統需求</h3><ul>
+<li>C++ 編譯器</li>
+<li>SFML 2.x 或更高版本</li>
+<li>Arial 字體文件 (arial.ttf)</li>
+<li>Gurobi Optimizer 10.0 或更高版本<ul>
+<li>請從 <a target="_blank" rel="noopener" href="https://www.gurobi.com/downloads/">Gurobi 官網</a> 下載並安裝</li>
+<li>需要有效的 Gurobi 授權（可申請免費的學術授權）</li>
+</ul>
+</li>
+</ul>
+<h3 id="🛠️-編譯說明"><a href="#🛠️-編譯說明" class="headerlink" title="🛠️ 編譯說明"></a>🛠️ 編譯說明</h3><h4 id="使用-g-編譯"><a href="#使用-g-編譯" class="headerlink" title="使用 g++ 編譯"></a>使用 g++ 編譯</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基本編譯指令</span></span><br><span class="line">g++ -c main.cpp draw.cpp -I/path/to/SFML/include -I/path/to/gurobi/include</span><br><span class="line">g++ main.o draw.o -o main -L/path/to/SFML/lib -L/path/to/gurobi/lib -lsfml-graphics -lsfml-window -lsfml-system -lgurobi_c++ -lgurobi100</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 C++17 標準編譯</span></span><br><span class="line">g++ -std=c++17 -c main.cpp draw.cpp -I/path/to/SFML/include -I/path/to/gurobi/include</span><br><span class="line">g++ main.o draw.o -o main -L/path/to/SFML/lib -L/path/to/gurobi/lib -lsfml-graphics -lsfml-window -lsfml-system -lgurobi_c++ -lgurobi100</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-Makefile-編譯"><a href="#使用-Makefile-編譯" class="headerlink" title="使用 Makefile 編譯"></a>使用 Makefile 編譯</h4><p>1.確保目錄中有 Makefile 文件</p>
+<p>2.在 Makefile 中設置 Gurobi 路徑：<br>   <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GUROBI_DIR = /path/to/gurobi</span><br><span class="line">GUROBI_INCLUDE = <span class="variable">$(GUROBI_DIR)</span>/<span class="keyword">include</span></span><br><span class="line">GUROBI_LIB = <span class="variable">$(GUROBI_DIR)</span>/lib</span><br><span class="line">GUROBI_LIBS = -lgurobi_c++ -lgurobi100</span><br></pre></td></tr></table></figure></p>
+<p>3.執行以下指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">make all</span><br></pre></td></tr></table></figure>
+
+<p>清理編譯文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="🚀-執行指令"><a href="#🚀-執行指令" class="headerlink" title="🚀 執行指令"></a>🚀 執行指令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基本執行（使用圖形界面）</span></span><br><span class="line">./main INPUT_MAZE.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 A* 演算法</span></span><br><span class="line">./main INPUT_MAZE.txt --astar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 ILP 演算法</span></span><br><span class="line">./main INPUT_MAZE.txt --ilp [--max-iter N] [--time-limit T] [--threads T]</span><br><span class="line"></span><br><span class="line">  * --max-iter： 遞迴次數（預設為 1）</span><br><span class="line">  * --time-limit： ILP Solver 時間限制（預設為 30 秒）</span><br><span class="line">  * --threads： ILP Solver 執行緒數量</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只顯示結果，不顯示圖形界面</span></span><br><span class="line">./main INPUT_MAZE.txt --no-gui</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在終端機印出詳細訊息</span></span><br><span class="line">./main INPUT_MAZE.txt --<span class="built_in">print</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 範例：使用多個選項</span></span><br><span class="line">./main INPUT_MAZE.txt --ilp --max-iter 3 --<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="可用參數"><a href="#可用參數" class="headerlink" title="可用參數"></a>可用參數</h4><ul>
+<li><code>--print</code>: 在控制台打印詳細的執行信息</li>
+<li><code>--no-gui</code>: 關閉圖形界面，只輸出結果</li>
+<li><code>--astar</code>: 使用 A* 演算法進行路徑搜索</li>
+<li><code>--ilp</code>: 使用 ILP 演算法進行路徑搜索<ul>
+<li><code>--max-iter N</code>: 設置 ILP 遞迴次數</li>
+<li><code>--time-limit T</code>: 設置 ILP 求解時間限制（秒）</li>
+<li><code>--threads T</code>: 設置 ILP 求解器使用的執行緒數量</li>
+</ul>
+</li>
+</ul>
 <h3 id="📝-INPUT-MAZE-格式"><a href="#📝-INPUT-MAZE-格式" class="headerlink" title="📝 INPUT_MAZE 格式"></a>📝 INPUT_MAZE 格式</h3><p>輸入文件必須遵循以下格式：</p>
-<ol>
-<li>第一行：兩個整數 M N，表示迷宮的行數和列數</li>
-<li>接下來 M 行：每行包含 N 個字符，表示迷宮的布局<ul>
+<p>1.第一行：兩個整數 M N，表示迷宮的行數和列數</p>
+<p>2.接下來 M 行：每行包含 N 個字符，表示迷宮的布局</p>
+<ul>
 <li><code>.</code>: 空白區域</li>
 <li><code>#</code>: 障礙物</li>
 <li><code>S1</code>, <code>S2</code>, …: 起點（S 後面的數字表示路徑 ID）</li>
 <li><code>E1</code>, <code>E2</code>, …: 終點（E 後面的數字表示路徑 ID）</li>
 </ul>
-</li>
-</ol>
-<p>輸入範例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5 7</span><br><span class="line">S1 . . # . . .</span><br><span class="line"># # . # . # .</span><br><span class="line">S2 # . . . # .</span><br><span class="line">. # # # # # .</span><br><span class="line">. . . E2 . . E1</span><br></pre></td></tr></table></figure>
+<h4 id="輸入範例"><a href="#輸入範例" class="headerlink" title="輸入範例"></a>輸入範例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5 7</span><br><span class="line">S1 . . # . . .</span><br><span class="line"># # . # . # .</span><br><span class="line">S2 # . . . # .</span><br><span class="line">. # # # # # .</span><br><span class="line">. . . E2 . . E1</span><br></pre></td></tr></table></figure>
 
 <p>說明：</p>
 <ul>
@@ -199,55 +238,102 @@
 </ul>
 <h3 id="📦-輸出文件"><a href="#📦-輸出文件" class="headerlink" title="📦 輸出文件"></a>📦 輸出文件</h3><ul>
 <li><code>maze_screenshot.png</code>: 迷宮的截圖</li>
-<li><code>routing_results.txt</code>: 包含所有路徑的詳細訊息<ul>
+<li><code>routing_results.txt</code>: 包含所有路徑的詳細信息<ul>
 <li>成功路徑: 顯示路徑 ID 和所需步數</li>
 </ul>
 </li>
 </ul>
-<h4 id="routing-results-txt-範例："><a href="#routing-results-txt-範例：" class="headerlink" title="routing_results.txt 範例："></a>routing_results.txt 範例：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route id: 1 =&gt; steps: 15</span><br><span class="line">route id: 2 =&gt; steps: 23</span><br><span class="line">Routing failed for net_id 3</span><br><span class="line">route id: 4 =&gt; steps: 18</span><br></pre></td></tr></table></figure>
+<h4 id="輸出範例"><a href="#輸出範例" class="headerlink" title="輸出範例"></a>輸出範例</h4><h5 id="routing-results-txt-範例："><a href="#routing-results-txt-範例：" class="headerlink" title="routing_results.txt 範例："></a>routing_results.txt 範例：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route id: 1 =&gt; steps: 15</span><br><span class="line">route id: 2 =&gt; steps: 23</span><br><span class="line">Routing failed for net_id 3</span><br><span class="line">route id: 4 =&gt; steps: 18</span><br></pre></td></tr></table></figure>
 
+<h5 id="終端機輸出範例（使用-—print-選項）："><a href="#終端機輸出範例（使用-—print-選項）：" class="headerlink" title="終端機輸出範例（使用 —print 選項）："></a>終端機輸出範例（使用 —print 選項）：</h5><p>Routing failed for net_id 1</p>
+<p>route id: 2 &#x3D;&gt; steps: 3</p>
 <h3 id="🎨-顏色說明"><a href="#🎨-顏色說明" class="headerlink" title="🎨 顏色說明"></a>🎨 顏色說明</h3><p>⚪️ 白色: 空白區域</p>
 <p>⚫️ 黑色: 障礙物</p>
 <p>🔵 藍色: 起點</p>
 <p>🔴 紅色: 終點</p>
 <p>🟢 綠色: 路徑</p>
 <p>🟣 紫色: 當前懸停的路徑</p>
-<h3 id="立即使用"><a href="#立即使用" class="headerlink" title="立即使用"></a>立即使用</h3><p>您可以在 <a target="_blank" rel="noopener" href="https://github.com/davidtseng2000/Maze-Routing-GUI/tree/master">GitHub</a> 上查看完整的程式碼。</p>
-<hr>
-<p><br><br><br></p>
-<h1 id="Introduction-English-Version"><a href="#Introduction-English-Version" class="headerlink" title="Introduction (English Version)"></a>Introduction (English Version)</h1><p>Maze Routing GUI is a maze routing visualization application developed using C++ and the SFML graphics library.</p>
-<h3 id="✨-Features"><a href="#✨-Features" class="headerlink" title="✨ Features"></a>✨ Features</h3><ul>
-<li>Maze routing visualization</li>
+<h3 id="⚠️-注意事項"><a href="#⚠️-注意事項" class="headerlink" title="⚠️ 注意事項"></a>⚠️ 注意事項</h3><ul>
+<li>確保程式目錄中有 arial.ttf 字體文件</li>
+<li>路徑結果文件會覆蓋已存在的同名文件</li>
+<li>編譯時請確保 SFML 庫路徑正確</li>
+<li>如果使用 Makefile，請確保 Makefile 中的路徑設置正確</li>
 </ul>
-<p><br><img src="/img/maze_1.jpg" width="50%"></p>
+<h3 id="Get-Started"><a href="#Get-Started" class="headerlink" title="Get Started"></a>Get Started</h3><p>You can view the complete code on <a target="_blank" rel="noopener" href="https://github.com/davidtseng2000/MazeRoutingILP-GUI">GitHub</a>.</p>
+<p><br><br><br></p>
+<h1 id="MazeRoutingILP-GUI-English-Intro"><a href="#MazeRoutingILP-GUI-English-Intro" class="headerlink" title="MazeRoutingILP-GUI (English Intro.)"></a>MazeRoutingILP-GUI (English Intro.)</h1><p>A maze routing visualization application developed using the SFML graphics library. Includes three different algorithms: BFS, A*, and ILP.</p>
+<h3 id="✨-Features"><a href="#✨-Features" class="headerlink" title="✨ Features"></a>✨ Features</h3><ul>
+<li><p>Special ILP Algorithm Implementation</p>
+</li>
+<li><p>Maze routing visualization</p>
+</li>
+</ul>
+<p><br><img src="/img/maze_1.jpg" width="30%"></p>
 <ul>
 <li>Interactive path hover effects with routing information</li>
 </ul>
-<p><br><img src="/img/maze_2.jpg" width="50%"></p>
+<p><br><img src="/img/maze_2.jpg" width="30%"></p>
 <ul>
 <li>Support for downloading maze screenshots</li>
 <li>Support for downloading routing results</li>
 </ul>
-<h3 id="📝-INPUT-MAZE-Format"><a href="#📝-INPUT-MAZE-Format" class="headerlink" title="📝 INPUT_MAZE Format"></a>📝 INPUT_MAZE Format</h3><p>The input file must follow this format:</p>
+<h3 id="📊-ILP-Algorithm"><a href="#📊-ILP-Algorithm" class="headerlink" title="📊 ILP Algorithm"></a>📊 ILP Algorithm</h3><p>Assuming we start with N Nets to route, we initialize a set <code>remaining_nets</code>. Users can set the number of iterations using the <code>--max-iter</code> parameter. In each iteration:</p>
 <ol>
-<li>First line: Two integers M N, representing the number of rows and columns of the maze</li>
-<li>Next M lines: Each line contains N characters representing the maze layout<ul>
-<li><code>.</code>: Empty space</li>
-<li><code>#</code>: Obstacle</li>
-<li><code>S1</code>, <code>S2</code>, …: Start points (the number after S indicates the path ID)</li>
-<li><code>E1</code>, <code>E2</code>, …: End points (the number after E indicates the path ID)</li>
+<li>For each Net in <code>remaining_nets</code>, we use BFS to find possible routes. The routes found for different Nets may conflict (share the same cell).</li>
+<li>Among the routes found in the previous step, we use the ILP algorithm to find “the maximum number of routes that can coexist without conflicts.”</li>
+<li>We remove these conflict-free routes from <code>remaining_nets</code>, indicating that we have determined their paths. These paths cannot conflict with future routes.</li>
+<li>If there are still elements in <code>remaining_nets</code> and we haven’t reached the <code>--max-iter</code> iteration, we return to step 1 and continue.</li>
+</ol>
+<h3 id="💻-System-Requirements"><a href="#💻-System-Requirements" class="headerlink" title="💻 System Requirements"></a>💻 System Requirements</h3><ul>
+<li>C++ compiler</li>
+<li>SFML 2.x or higher</li>
+<li>Arial font file (arial.ttf)</li>
+<li>Gurobi Optimizer 10.0 or higher<ul>
+<li>Download and install from <a target="_blank" rel="noopener" href="https://www.gurobi.com/downloads/">Gurobi website</a></li>
+<li>Valid Gurobi license required (free academic license available)</li>
 </ul>
 </li>
-</ol>
-<p>Input Example</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5 7</span><br><span class="line">S1 . . # . . .</span><br><span class="line"># # . # . # .</span><br><span class="line">S2 # . . . # .</span><br><span class="line">. # # # # # .</span><br><span class="line">. . . E2 . . E1</span><br></pre></td></tr></table></figure>
+</ul>
+<h3 id="🛠️-Compilation-Instructions"><a href="#🛠️-Compilation-Instructions" class="headerlink" title="🛠️ Compilation Instructions"></a>🛠️ Compilation Instructions</h3><h4 id="Using-g"><a href="#Using-g" class="headerlink" title="Using g++"></a>Using g++</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Basic compilation</span></span><br><span class="line">g++ -c main.cpp draw.cpp -I/path/to/SFML/include -I/path/to/gurobi/include</span><br><span class="line">g++ main.o draw.o -o main -L/path/to/SFML/lib -L/path/to/gurobi/lib -lsfml-graphics -lsfml-window -lsfml-system -lgurobi_c++ -lgurobi100</span><br><span class="line"></span><br><span class="line"><span class="comment"># Using C++17 standard</span></span><br><span class="line">g++ -std=c++17 -c main.cpp draw.cpp -I/path/to/SFML/include -I/path/to/gurobi/include</span><br><span class="line">g++ main.o draw.o -o main -L/path/to/SFML/lib -L/path/to/gurobi/lib -lsfml-graphics -lsfml-window -lsfml-system -lgurobi_c++ -lgurobi100</span><br></pre></td></tr></table></figure>
 
-<p>Explanation:</p>
+<h4 id="Using-Makefile"><a href="#Using-Makefile" class="headerlink" title="Using Makefile"></a>Using Makefile</h4><p>1.Ensure Makefile exists in the directory</p>
+<p>2.Set Gurobi paths in Makefile:<br>   <figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GUROBI_DIR = /path/to/gurobi</span><br><span class="line">GUROBI_INCLUDE = <span class="variable">$(GUROBI_DIR)</span>/<span class="keyword">include</span></span><br><span class="line">GUROBI_LIB = <span class="variable">$(GUROBI_DIR)</span>/lib</span><br><span class="line">GUROBI_LIBS = -lgurobi_c++ -lgurobi100</span><br></pre></td></tr></table></figure></p>
+<p>3.Run the following commands:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">make all</span><br></pre></td></tr></table></figure>
+
+<p>Clean compilation files:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make clean</span><br></pre></td></tr></table></figure>
+
+<h3 id="🚀-Execution-Commands"><a href="#🚀-Execution-Commands" class="headerlink" title="🚀 Execution Commands"></a>🚀 Execution Commands</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Basic execution (with GUI)</span></span><br><span class="line">./main INPUT_MAZE.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Using A* algorithm</span></span><br><span class="line">./main INPUT_MAZE.txt --astar</span><br><span class="line"></span><br><span class="line"><span class="comment"># Using ILP algorithm</span></span><br><span class="line">./main INPUT_MAZE.txt --ilp [--max-iter N] [--time-limit T] [--threads T]</span><br><span class="line"></span><br><span class="line">  * --max-iter: Number of iterations (default: 1)</span><br><span class="line">  * --time-limit: ILP Solver <span class="keyword">time</span> <span class="built_in">limit</span> <span class="keyword">in</span> seconds (default: 30)</span><br><span class="line">  * --threads: Number of ILP Solver threads</span><br><span class="line"></span><br><span class="line"><span class="comment"># Display results only, no GUI</span></span><br><span class="line">./main INPUT_MAZE.txt --no-gui</span><br><span class="line"></span><br><span class="line"><span class="comment"># Print detailed information in terminal</span></span><br><span class="line">./main INPUT_MAZE.txt --<span class="built_in">print</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Example: Using multiple options</span></span><br><span class="line">./main INPUT_MAZE.txt --ilp --max-iter 3 --<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Available-Parameters"><a href="#Available-Parameters" class="headerlink" title="Available Parameters"></a>Available Parameters</h4><ul>
+<li><code>--print</code>: Print detailed execution information in the terminal</li>
+<li><code>--no-gui</code>: Disable GUI, output results only</li>
+<li><code>--astar</code>: Use A* algorithm for path finding</li>
+<li><code>--ilp</code>: Use ILP algorithm for path finding<ul>
+<li><code>--max-iter N</code>: Set number of ILP iterations</li>
+<li><code>--time-limit T</code>: Set ILP solver time limit in seconds</li>
+<li><code>--threads T</code>: Set number of ILP solver threads</li>
+</ul>
+</li>
+</ul>
+<h3 id="📝-INPUT-MAZE-Format"><a href="#📝-INPUT-MAZE-Format" class="headerlink" title="📝 INPUT_MAZE Format"></a>📝 INPUT_MAZE Format</h3><p>The input file must follow this format:</p>
+<p>1.First line: Two integers M N, representing the number of rows and columns</p>
+<p>2.Next M lines: Each line contains N characters representing the maze layout</p>
+<ul>
+<li><code>.</code>: Empty space</li>
+<li><code>#</code>: Obstacle</li>
+<li><code>S1</code>, <code>S2</code>, …: Start points (number after S indicates path ID)</li>
+<li><code>E1</code>, <code>E2</code>, …: End points (number after E indicates path ID)</li>
+</ul>
+<h4 id="Input-Example"><a href="#Input-Example" class="headerlink" title="Input Example"></a>Input Example</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5 7</span><br><span class="line">S1 . . # . . .</span><br><span class="line"># # . # . # .</span><br><span class="line">S2 # . . . # .</span><br><span class="line">. # # # # # .</span><br><span class="line">. . . E2 . . E1</span><br></pre></td></tr></table></figure>
+
+<p>Description:</p>
 <ul>
 <li>Maze size is 5 rows × 7 columns</li>
 <li>Two paths to find:<ul>
-<li>Path 1: From S1 to E1</li>
-<li>Path 2: From S2 to E2</li>
+<li>Path 1: from S1 to E1</li>
+<li>Path 2: from S2 to E2</li>
 </ul>
 </li>
 <li><code>#</code> represents obstacles that paths cannot pass through</li>
@@ -256,19 +342,28 @@
 <h3 id="📦-Output-Files"><a href="#📦-Output-Files" class="headerlink" title="📦 Output Files"></a>📦 Output Files</h3><ul>
 <li><code>maze_screenshot.png</code>: Screenshot of the maze</li>
 <li><code>routing_results.txt</code>: Contains detailed information about all paths<ul>
-<li>Successful paths: Shows path ID and number of steps required</li>
+<li>Successful paths: Shows path ID and number of steps</li>
+<li>Failed paths: Marked as failed</li>
 </ul>
 </li>
 </ul>
-<h4 id="routing-results-txt-example"><a href="#routing-results-txt-example" class="headerlink" title="routing_results.txt example:"></a>routing_results.txt example:</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route id: 1 =&gt; steps: 15</span><br><span class="line">route id: 2 =&gt; steps: 23</span><br><span class="line">Routing failed for net_id 3</span><br><span class="line">route id: 4 =&gt; steps: 18</span><br></pre></td></tr></table></figure>
+<h4 id="Output-Examples"><a href="#Output-Examples" class="headerlink" title="Output Examples"></a>Output Examples</h4><h5 id="routing-results-txt-example"><a href="#routing-results-txt-example" class="headerlink" title="routing_results.txt example:"></a>routing_results.txt example:</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">route id: 1 =&gt; steps: 15</span><br><span class="line">route id: 2 =&gt; steps: 23</span><br><span class="line">Routing failed for net_id 3</span><br><span class="line">route id: 4 =&gt; steps: 18</span><br></pre></td></tr></table></figure>
 
-<h3 id="🎨-Color-Legend"><a href="#🎨-Color-Legend" class="headerlink" title="🎨 Color Legend"></a>🎨 Color Legend</h3><p>⚪️ White: Empty space</p>
+<h5 id="Terminal-output-example-using-–print-option"><a href="#Terminal-output-example-using-–print-option" class="headerlink" title="Terminal output example (using –print option):"></a>Terminal output example (using –print option):</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Routing failed for net_id 1</span><br><span class="line">route id: 2 =&gt; steps: 3</span><br></pre></td></tr></table></figure>
+
+<h3 id="🎨-Color-Guide"><a href="#🎨-Color-Guide" class="headerlink" title="🎨 Color Guide"></a>🎨 Color Guide</h3><p>⚪️ White: Empty space</p>
 <p>⚫️ Black: Obstacle</p>
 <p>🔵 Blue: Start point</p>
 <p>🔴 Red: End point</p>
 <p>🟢 Green: Path</p>
 <p>🟣 Purple: Currently hovered path</p>
-<h3 id="Get-Started"><a href="#Get-Started" class="headerlink" title="Get Started"></a>Get Started</h3><p>You can view the complete code on <a target="_blank" rel="noopener" href="https://github.com/davidtseng2000/Maze-Routing-GUI/tree/master">GitHub</a>.</p>
+<h3 id="⚠️-Notes"><a href="#⚠️-Notes" class="headerlink" title="⚠️ Notes"></a>⚠️ Notes</h3><ul>
+<li>Ensure arial.ttf font file is in the program directory</li>
+<li>Routing result files will overwrite existing files with the same name</li>
+<li>Make sure SFML library paths are correct during compilation</li>
+<li>If using Makefile, ensure the paths in Makefile are correctly set</li>
+</ul>
+<h3 id="Get-Started-1"><a href="#Get-Started-1" class="headerlink" title="Get Started"></a>Get Started</h3><p>You can view the complete code on <a target="_blank" rel="noopener" href="https://github.com/davidtseng2000/MazeRoutingILP-GUI">GitHub</a>.</p>
 
     </div>
 
