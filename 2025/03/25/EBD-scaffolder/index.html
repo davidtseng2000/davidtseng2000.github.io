@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>EBD-scaffolder - dt2000</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="EBD-scaffolder - dt2000" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://davidtseng2000.github.io/2025/03/25/EBD-scaffolder/index.html" />
+  
+  <meta property="og:image" content="/img/ebd/EBD-cover.webp" />
+  
+  <meta property="og:article:published_time" content="2025-03-24T16:00:00.000Z" />
+  
+  <meta property="og:article:author" content="Tseng, Chun-En" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+    <body
+        data-color-scheme="auto"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">dt2000</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/projects">Projects</a>
+            
+            
+            
+            <a class="nav-item" href="/daily">Daily</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/davidtseng2000" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-ig nav-item-icon" href="https://www.instagram.com/davidtseng2000/" target="_blank" aria-label="IG">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/Projects/">Projects</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>March</span>
+            <span>25,</span>
+            <span>2025</span>
+        </div>
+        
+
+        <h1 class="title">EBD-scaffolder</h1>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <style>
+  p {
+    text-align: justify;
+  }
+</style>
+
+<h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>來源： “Help” page of <a target="_blank" rel="noopener" href="https://genome.cs.nthu.edu.tw/EBD-scaffolder/">EBD-scaffolder</a></p>
+<p>“<a target="_blank" rel="noopener" href="https://genome.cs.nthu.edu.tw/EBD-scaffolder/">EBD-scaffolder</a> is a web server that allows users to conveniently and efficiently scaffold (i.e., order and orient) the contigs of a target draft genome using a single reference genome from a related organism. The scaffolding function of EBD-scaffolder was implemented using an integer linear programming algorithm that we specifically designed to solve the exemplar breakpoint distance (EBD) based scaffolding problem. We refer users to our paper published in <a target="_blank" rel="noopener" href="https://www.liebertpub.com/doi/10.1089/cmb.2021.0399">Journal of Computational Biology (An Integer Linear Programming Approach for Scaffolding Based on Exemplar Breakpoint Distance, Vol. 29, pp. 961-973, 2022)</a> for its details. The web server of EBD-scaffolder is free and open to all users with no login required.”</p>
+<h3 id="My-Responsibility"><a href="#My-Responsibility" class="headerlink" title="My Responsibility"></a>My Responsibility</h3><p>• Designing visualization modules, including Circos-plot and Dot-plot.<br>• Tools Used: C&#x2F;C++, Python, JavaScript, PHP</p>
+<h3 id="Previous-Work"><a href="#Previous-Work" class="headerlink" title="Previous Work"></a>Previous Work</h3><p>我們實驗室之前已根據<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/30598087/">這篇論文</a>製作了一套的 <a target="_blank" rel="noopener" href="https://genome.cs.nthu.edu.tw/Multi-CSAR/">web server</a>，可以用來解決目標基因體和多個參考基因體的 scaffolding 問題，並將結果以視覺化的方式呈現，如 Dotplot 和 Circos plot。</p>
+<p>後來老師希望我可以把另一位學長的<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/35638936/">論文</a>也實作成 web server，雖然和 Multi-CSAR 一樣都是解決 scaffolding 問題，但背後的演算法完全不同，本篇是用一種名為 <strong>EBD 距離</strong>的計算方式來衡量兩基因體的相似度，在此架構下會有很多不錯的性質可以加速我們的 scaffolding 過程。兩篇論文底層用來找基因（called <strong>gene</strong> or <strong>marker</strong>）的工具也不同，Multi-CSAR 用的是 <a target="_blank" rel="noopener" href="https://mummer4.github.io/">MUMmer</a>，而 EBD-scaffolder 是用 <a target="_blank" rel="noopener" href="https://github.com/bioinf/Sibelia">Sibelia</a>。總之雖然 EBD-scaffolder 是基於 Multi-CSAR 去改的，但底層的演算法和輸入、輸出都不太一樣，有不少地方需要重新寫過。</p>
+<h3 id="The-Challenges"><a href="#The-Challenges" class="headerlink" title="The Challenges"></a>The Challenges</h3><ul>
+<li>初見網頁程式</li>
+</ul>
+<p>首先因為沒碰過 HTML、CSS、JavaScript 和 PHP，所以在看 Multi-CSAR 的程式碼遇到滿多困難的，釐清程式間呼叫的關係就花了不少時間。所幸在實驗室多待個幾天後，成功抽絲剝繭搞清楚它們的關係，當時還把 web server 整理成一張流程圖。</p>
+<ul>
+<li>資料爬取和分析</li>
+</ul>
+<p>接著我要挑出以 EBD-scaffolder 演算法做為基底需要更改原程式的地方。不改還好，一改發現它用到找基因的工具 Sibelia 和之前的 MUMmer 輸出差滿多的，因此要將 Sibelia 的輸入和輸出搞懂，並從眾多輸出檔案中爬取我需要的部分可說是我遇到的第二個挑戰。在這個階段因為覺得 python 爬資料的能力滿好的，所以寫了不少 python。 </p>
+<ul>
+<li>看 SPEC 的挑戰</li>
+</ul>
+<p>下一個遇到的挑戰是要將結果視覺化，在生物資訊領域，<a target="_blank" rel="noopener" href="https://circos.ca/"><strong>Circos plot</strong></a> 就是一個很好用的工具，只要輸入符合 SPEC 的資料，就可以產生出不錯的視覺化圖形，提供使用者一目瞭然的 scaffolding 結果。不過誠如前面提到的，因為 EBD 的底層架構和 Multi-CSAR 有許多不同的地方，想偷懶用 Multi-CSAR 製作 Circos plot 的程式是不可能的。再加上老師和我都覺得若 EBD-scaffolder 沒有在 Circos plot 上比 Multi-CSAR 提供更多的資訊給使用者，那 EBD 就太了無新意了，所以我乾脆就重寫一個程式來產生 Circos 需要的 input。這段時間我訓練了耐心看 SPEC 的習慣，所謂「工欲善其事，必先利其器」，要將別人寫好的程式為我所用，看 SPEC是必須的。</p>
+<p><br><img src="/img/ebd/circos_ori.png" width="30%"><br><br><img src="/img/ebd/circos_aft.png" width="30%"></p>
+<ul>
+<li>UI 的磨練</li>
+</ul>
+<p>在過程中有個比較輕鬆有趣的小挑戰，和前面提到的 Circos plot 有關。當初為了在 Circos plot 上呈現更多的資訊給使用者（像是基因體上的 contig 和 gene 的包含關係、或是目標基因體和參考基因體之間的 gene 配對關係），但又不要讓畫面太過雜亂，就和老師討論了好幾個不同的呈現方式。像是本來我用隨機亂數生成 RGB 顏色，不同的顏色代表不同的 gene 配對關係，不過 RGB 會有個問題是隨機生成的顏色看起來會很不協調，後來發現可以將顏色用 HSL 表示法，並且將飽和度、亮度都設為定值，僅用隨機變數生成色相，在此架構下產生的顏色就會協調很多，像線條的顏色明亮就不會有差異。</p>
+<p>此外，我在程式執行中的 loading page 製作了一個可愛的 DNA 小動畫，算是我整個 project 裡面數一數二喜歡的部分哈哈哈。（放到這邊畫質有點跑掉了）</p>
+<p><br><img src="/img/ebd/running_dna.gif" width="30%"></p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Tseng, Chun-En, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/scaffold/" class="tag">#scaffold</a><a href="/tags/web-server/" class="tag">#web-server</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2025/05/09/Rokudenashi%201st%20Oneman%20Live%E3%80%8CNot%20Just%20A%20Memory%E3%80%8D/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">Rokudenashi 1st Oneman Live「Not Just A Memory」</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2024/10/14/2024%20Japan%20Trip/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">2024 Japan Trip –– Tokyo &amp; Kanagawa</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/projects" class="item">Projects</a>
+                
+                <a href="/daily" class="item">Daily</a>
+                
+                <a href="/about" class="item">About</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Projects</h2>
+                
+                <a target="_blank" rel="noopener" href="https://genome.cs.nthu.edu.tw/EBD-scaffolder/" class="item">EBD scaffolder</a>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/davidtseng2000/MazeRoutingILP-GUI" class="item">MazeRoutingILP-GUI</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/davidtseng2000" class="item">GitHub</a>
+                
+                <a target="_blank" rel="noopener" href="https://www.instagram.com/davidtseng2000/" class="item">IG</a>
+                
+                <a href="mailto:david890211@gmail.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2025 Tseng, Chun-En<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
